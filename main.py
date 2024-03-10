@@ -3,6 +3,7 @@ import random
 import math
 import sys
 
+# set a list of 6 people from diff. cities
 people = [('Lisbon', 'LIS'),
           ('Madrid', 'MAD'),
           ('Paris', 'CDG'),
@@ -10,15 +11,17 @@ people = [('Lisbon', 'LIS'),
           ('Brussels', 'BRU'),
           ('London', 'LHR')]
 
-flights = {}
+#parce a dictionary from flights.txt
+flights = {} 
 for line in open('flights.txt'):
     origin, destiny, departure, arrival, price = line.split(',')
     flights.setdefault((origin, destiny), [])
     flights[(origin, destiny)].append((departure, arrival, int(price)))
 
 # for key, value in flights.items():
-#  print(key, value)
+# print(key, value)
 
+# if put there ARRAY then can get a PRINT DASHBOARD of all pass and flights
 def print_schedule(schedule):
     flight_id = -1
     total_price = 0
@@ -35,10 +38,13 @@ def print_schedule(schedule):
                                                         going[1], going[2],
                                                         returning[0], returning[1], returning[2]))
     print('Total price: ', total_price)
+
 def get_minutes(hour):
     t = time.strptime(hour, '%H:%M')
     minutes = t[3] * 60 + t[4]
     return minutes
+
+# pass here N schedules and fun calculates COSTs, Waiting Time
 def fitness_function(solution):
     total_price = 0
     last_arrival = 0
@@ -79,9 +85,11 @@ def fitness_function(solution):
 
     return total_price + total_wait
 
+# just random generateor of how many people and flights for search
 domain = [(0,9)] * (len(people) * 2)
 [random.randint(0,9) for i in range(len(domain))]
 
+# puts DOMAIN and itterates 1K times using each time FITNESS FUNCTION
 def random_search(domain, fitness_function):
   best_cost = sys.maxsize
   for i in range(1000):
